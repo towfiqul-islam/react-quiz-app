@@ -1,25 +1,47 @@
-import logo from './logo.svg';
-import './App.css';
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+import Answers from './components/Answers';
+import Signin from './components/Signin';
+import Questions from './components/Questions';
+import AppState from './context/AppState';
+import { isAdmin, isUser, isUserOrAdmin } from './utils/permission';
+import { quizData } from './utils/seed';
 
 function App() {
+  localStorage.setItem('quiz', JSON.stringify(quizData));
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <>
+      <AppState>
+        <BrowserRouter>
+          <Routes>
+            <Route path='/' element={getHomePage()} />
+            <Route
+              path='/questions'
+              element={isAdmin ? <Questions /> : <Navigate to='/' replace />}
+            />
+
+            <Route
+              path='/answers'
+              element={
+                isUserOrAdmin ? <Answers /> : <Navigate to='/' replace />
+              }
+            />
+
+            <Route path='*' element={<Navigate to='/' replace />} />
+          </Routes>
+        </BrowserRouter>
+      </AppState>
+    </>
   );
+}
+
+function getHomePage() {
+  if (isAdmin) {
+    return <Navigate to='/questions' replace />;
+  } else if (isUser) {
+    return <Navigate to='/answers' replace />;
+  } else {
+    return <Signin />;
+  }
 }
 
 export default App;
