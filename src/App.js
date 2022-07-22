@@ -8,6 +8,7 @@ import { quizData } from './utils/seed';
 
 function App() {
   localStorage.setItem('quiz', JSON.stringify(quizData));
+  localStorage.removeItem('archive');
   return (
     <>
       <AppState>

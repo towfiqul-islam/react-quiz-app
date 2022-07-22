@@ -1,9 +1,13 @@
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 import { v4 as uuidv4 } from 'uuid';
 
 const Questions = () => {
   const existingQuiz = JSON.parse(localStorage.getItem('quiz')) || [];
-  let [quiz, setQuiz] = useState(existingQuiz);
+  const archived = JSON.parse(localStorage.getItem('archive')) || [];
+  const [quiz, setQuiz] = useState(existingQuiz);
+  const [archive, setArchive] = useState(archived);
+  const [isEditing, setIsEditing] = useState(false);
   const [id, setId] = useState(uuidv4());
   const [title, setTitle] = useState('');
   const [opt_1, setOpt_1] = useState({
@@ -82,6 +86,7 @@ const Questions = () => {
       answer_4: '',
       is_correct_4: false,
     });
+    setIsEditing(false);
   };
 
   const handleValidation = () => {
@@ -112,7 +117,6 @@ const Questions = () => {
 
   const checkExistence = (singleQuiz) => {
     let found = false;
-    console.log({ quiz });
     for (const q of quiz) {
       if (q.id === singleQuiz.id) found = true;
     }
@@ -123,7 +127,7 @@ const Questions = () => {
     const isValid = handleValidation();
     if (isValid) {
       let singleQuiz = {
-        id,
+        id: !isEditing ? uuidv4() : id,
         quizTitle: title,
         options: [
           {
@@ -146,8 +150,6 @@ const Questions = () => {
       };
 
       const alreadyExists = checkExistence(singleQuiz);
-
-      console.log({ alreadyExists });
 
       if (alreadyExists) {
         let updatedQuiz = quiz;
@@ -181,7 +183,7 @@ const Questions = () => {
     return ans;
   };
 
-  const handleDelete = (q) => {
+  const deleteFromQuiz = (q) => {
     const updatedQuiz = quiz.filter((qu) => {
       return qu.quizTitle !== q.quizTitle;
     });
@@ -191,6 +193,7 @@ const Questions = () => {
   };
 
   const handleEdit = (q) => {
+    setIsEditing(true);
     setId(q.id);
     setTitle(q.quizTitle);
     setOpt_1({
@@ -211,9 +214,37 @@ const Questions = () => {
     });
   };
 
+  const pushToArchive = (q) => {
+    let temp = archive;
+    temp.push(q);
+    setArchive(temp);
+    localStorage.setItem('archive', JSON.stringify(temp));
+    deleteFromQuiz(q);
+  };
+
+  const handleRestore = (q) => {
+    existingQuiz.push(q);
+    localStorage.setItem('quiz', JSON.stringify(existingQuiz));
+    setQuiz(existingQuiz);
+
+    deleteFromArchive(q);
+  };
+
+  const deleteFromArchive = (q) => {
+    const updatedArchive = archive.filter((qu) => {
+      return qu.quizTitle !== q.quizTitle;
+    });
+    setArchive(updatedArchive);
+    localStorage.removeItem('archive');
+    localStorage.setItem('archive', JSON.stringify(updatedArchive));
+  };
+
   return (
     <>
       <div>Questions</div>
+      <div className='bg-gray-500 px-2 py-1 w-48 my-4'>
+        <Link to='/answers'>Go to Answers</Link>
+      </div>
       <label>Title</label>
       <textarea
         className='border border-gray-900'
@@ -310,7 +341,7 @@ const Questions = () => {
               <th>Quiz title</th>
               <th>Answer</th>
               <th>Edit</th>
-              <th>Delete</th>
+              <th>Archive</th>
             </tr>
             {quiz.length > 0 &&
               quiz.map((q, index) => (
@@ -327,16 +358,61 @@ const Questions = () => {
                   </td>
                   <td>
                     <button
-                      onClick={() => handleDelete(q)}
-                      className='px-8 py-1 bg-red-700'
+                      onClick={() => pushToArchive(q)}
+                      className='px-8 py-1 bg-red-300'
                     >
-                      Delete
+                      Archive
                     </button>
                   </td>
                 </tr>
               ))}
           </tbody>
         </table>
+        <br />
+        <br />
+        <br />
+        <br />
+        <div>
+          {archive.length > 0 && (
+            <>
+              <h2>Archive</h2>
+              <table>
+                <tbody>
+                  <tr>
+                    <th>Quiz title</th>
+                    <th>Answer</th>
+                    <th>Restore</th>
+                    <th>Delete</th>
+                  </tr>
+                  {archive.length > 0 &&
+                    archive.map((q, index) => (
+                      <tr key={index}>
+                        <td>{q.quizTitle}</td>
+                        <td>{getCorrectAnswer(q.options)}</td>
+                        <td>
+                          <button
+                            onClick={() => handleRestore(q)}
+                            className='px-8 py-1 bg-gray-500'
+                          >
+                            Restore
+                          </button>
+                        </td>
+
+                        <td>
+                          <button
+                            onClick={() => deleteFromArchive(q)}
+                            className='px-8 py-1 bg-red-700'
+                          >
+                            Delete
+                          </button>
+                        </td>
+                      </tr>
+                    ))}
+                </tbody>
+              </table>
+            </>
+          )}
+        </div>
       </div>
     </>
   );
