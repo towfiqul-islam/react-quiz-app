@@ -2,20 +2,32 @@ import React, { useState } from 'react';
 
 const Answers = () => {
   const quiz = JSON.parse(localStorage.getItem('quiz')) || [];
-
-  const [ans_count, set_ans_count] = useState(0);
+  const cached = JSON.parse(localStorage.getItem('cache')) || {};
+  const [ans_count, set_ans_count] = useState(
+    parseInt(cached['ans_count'] || 0)
+  );
   const [current_quiz, set_current_quiz] = useState(quiz[ans_count]);
-  const [score, setScore] = useState(0);
+  const [score, setScore] = useState(parseInt(cached['score'] || 0));
   const [showScore, setShowScore] = useState(false);
   const [done, setDone] = useState(false);
   const { quizTitle, options } = current_quiz || {};
 
+  const addToCache = (ans = false) => {
+    cached.ans_count = ans_count + 1;
+    if (ans) {
+      cached.score = score + 1;
+    }
+
+    localStorage.setItem('cache', JSON.stringify(cached));
+  };
+
   const handleAnswer = (answer) => {
     if (ans_count < quiz.length) {
       set_ans_count(ans_count + 1);
-
+      addToCache();
       if (answer) {
         setScore(score + 1);
+        addToCache(true);
       }
       if (ans_count + 1 === quiz.length) {
         set_current_quiz(quiz[ans_count]);
@@ -27,6 +39,7 @@ const Answers = () => {
     }
   };
   const restartQuiz = () => {
+    localStorage.removeItem('cache');
     window.location.reload();
   };
   return (
