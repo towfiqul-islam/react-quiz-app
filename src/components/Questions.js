@@ -284,7 +284,7 @@ const Questions = () => {
                 htmlFor='is_correct_1'
                 className='ml-2 text-sm font-medium text-gray-900'
               >
-                Is correct 1
+                Is correct
               </label>
             </div>
           </div>
@@ -325,7 +325,7 @@ const Questions = () => {
                 htmlFor='is_correct_2'
                 className='ml-2 text-sm font-medium text-gray-900'
               >
-                Is correct 2
+                Is correct
               </label>
             </div>
           </div>
@@ -365,7 +365,7 @@ const Questions = () => {
                 htmlFor='is_correct_3'
                 className='ml-2 text-sm font-medium text-gray-900'
               >
-                Is correct 3
+                Is correct
               </label>
             </div>
           </div>
@@ -397,7 +397,7 @@ const Questions = () => {
                 onChange={handleOptionChange4}
                 name='is_correct_4'
                 checked={is_correct_4}
-                className='w-4 h-4 bg-gray-50 rounded border border-gray-300 focus:ring-3 '
+                className='w-4 h-4 bg-gray-50 rounded border border-gray-300 focus:ring-3'
                 required
               />
 
@@ -405,7 +405,7 @@ const Questions = () => {
                 htmlFor='is_correct_4'
                 className='ml-2 text-sm font-medium text-gray-900'
               >
-                Is correct 4
+                Is correct
               </label>
             </div>
           </div>
