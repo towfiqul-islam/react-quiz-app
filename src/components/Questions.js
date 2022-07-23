@@ -227,9 +227,9 @@ const Questions = () => {
   return (
     <>
       <Navbar />
-      <div className='w-4/5 mx-auto'>
+      <div className='w-4/5 md:w-1/2 mx-auto'>
         <h2 className='text-center text-xl mt-4 mb-4 underline font-medium'>
-          Add Questions
+          Add or Edit Questions
         </h2>
         <div className=''>
           <label
@@ -269,7 +269,7 @@ const Questions = () => {
               />
             </div>
 
-            <div className='ml-10'>
+            <div className='ml-6 flex items-center'>
               <input
                 id='is_correct_1'
                 type='checkbox'
@@ -310,7 +310,7 @@ const Questions = () => {
               />
             </div>
 
-            <div className='ml-10'>
+            <div className='ml-6 flex items-center'>
               <input
                 id='is_correct_2'
                 type='checkbox'
@@ -350,7 +350,7 @@ const Questions = () => {
               />
             </div>
 
-            <div className='ml-10'>
+            <div className='ml-6 flex items-center'>
               <input
                 id='is_correct_3'
                 type='checkbox'
@@ -390,7 +390,7 @@ const Questions = () => {
               />
             </div>
 
-            <div className='ml-10'>
+            <div className='ml-6 flex items-center'>
               <input
                 id='is_correct_4'
                 type='checkbox'
@@ -412,7 +412,7 @@ const Questions = () => {
           <br />
           <button
             onClick={handleAddUpdate}
-            className='text-white bg-blue-700 hover:bg-blue-800  font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center'
+            className='text-white bg-blue-700 hover:bg-blue-800  font-medium rounded-lg text-sm w-48 px-5 py-2.5 text-center block mx-auto sm:m-0'
           >
             {isEditing ? 'Edit' : 'Add'}
           </button>
