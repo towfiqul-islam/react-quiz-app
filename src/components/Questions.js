@@ -410,6 +410,7 @@ const Questions = () => {
             </div>
           </div>
           <br />
+          <br />
           <button
             onClick={handleAddUpdate}
             className='text-white bg-blue-700 hover:bg-blue-800  font-medium rounded-lg text-sm w-48 px-5 py-2.5 text-center block mx-auto sm:m-0'

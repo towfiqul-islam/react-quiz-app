@@ -11,6 +11,9 @@ const QuestionsList = ({
 }) => {
   return (
     <div>
+      <br />
+      <br />
+      <br />
       <h2 className='text-center text-xl mt-4 mb-4 underline font-medium'>
         Current Questions
       </h2>
@@ -35,10 +38,7 @@ const QuestionsList = ({
           <tbody>
             {quiz.length > 0 &&
               quiz.map((q, index) => (
-                <tr
-                  key={index}
-                  className='bg-gray-50 border-b'
-                >
+                <tr key={index} className='bg-gray-50 border-b'>
                   <th
                     scope='row'
                     className='py-4 px-6 font-medium text-gray-900 whitespace-nowrap'
@@ -70,7 +70,6 @@ const QuestionsList = ({
         </table>
       </div>
 
-      <br />
       <br />
       <br />
       <br />
