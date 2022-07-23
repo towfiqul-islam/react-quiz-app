@@ -36,10 +36,7 @@ const Archive = ({
           <tbody>
             {archive.length > 0 &&
               archive.map((q, index) => (
-                <tr
-                  key={index}
-                  className='bg-gray-50 border-b'
-                >
+                <tr key={index} className='bg-gray-50 border-b'>
                   <th
                     scope='row'
                     className='py-4 px-6 font-medium text-gray-900 whitespace-nowrap'
@@ -70,6 +67,9 @@ const Archive = ({
           </tbody>
         </table>
       </div>
+      <br />
+      <br />
+      <br />
     </div>
   );
 };
