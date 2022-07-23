@@ -4,14 +4,10 @@ import Signin from './components/Signin';
 import Questions from './components/Questions';
 import AppState from './context/AppState';
 import { isAdmin, isUser, isUserOrAdmin } from './utils/permission';
-import { quizData } from './utils/seed';
+import { generateSeedData } from './utils/helper';
 
 function App() {
-  const existingQuiz = JSON.parse(localStorage.getItem('quiz')) || [];
-  if (existingQuiz && existingQuiz.length === 0) {
-    localStorage.setItem('quiz', JSON.stringify(quizData));
-    localStorage.removeItem('archive');
-  }
+  generateSeedData();
 
   return (
     <>

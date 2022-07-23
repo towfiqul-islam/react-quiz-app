@@ -1,3 +1,5 @@
+import { quizData } from "./seed";
+
 const deleteFromQuiz = (q, quiz, setQuiz) => {
   const updatedQuiz = quiz.filter((qu) => {
     return qu.quizTitle !== q.quizTitle;
@@ -56,4 +58,12 @@ export const pushToArchive = (q, archive, setArchive, quiz, setQuiz) => {
   setArchive(temp);
   localStorage.setItem('archive', JSON.stringify(temp));
   deleteFromQuiz(q, quiz, setQuiz);
+};
+
+export const generateSeedData = () => {
+  const existingQuiz = JSON.parse(localStorage.getItem('quiz')) || [];
+  if (existingQuiz && existingQuiz.length === 0) {
+    localStorage.setItem('quiz', JSON.stringify(quizData));
+    localStorage.removeItem('archive');
+  }
 };
