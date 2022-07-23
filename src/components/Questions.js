@@ -1,6 +1,14 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { v4 as uuidv4 } from 'uuid';
+import {
+  checkExistence,
+  deleteFromArchive,
+  handleRestore,
+  pushToArchive,
+} from '../utils/helper';
+import Archive from './questions/Archive';
+import QuestionsList from './questions/QuestionsList';
 
 const Questions = () => {
   const existingQuiz = JSON.parse(localStorage.getItem('quiz')) || [];
@@ -41,6 +49,7 @@ const Questions = () => {
       setOpt_1({ ...opt_1, answer_1: e.target.value });
     } else if (e.target.name === 'is_correct_1') {
       setOpt_1({ ...opt_1, is_correct_1: e.target.checked });
+      unCheckOthers({checkedItem: 1});
     }
   };
 
@@ -49,6 +58,7 @@ const Questions = () => {
       setOpt_2({ ...opt_2, answer_2: e.target.value });
     } else if (e.target.name === 'is_correct_2') {
       setOpt_2({ ...opt_2, is_correct_2: e.target.checked });
+      unCheckOthers({checkedItem: 2});
     }
   };
 
@@ -57,6 +67,7 @@ const Questions = () => {
       setOpt_3({ ...opt_3, answer_3: e.target.value });
     } else if (e.target.name === 'is_correct_3') {
       setOpt_3({ ...opt_3, is_correct_3: e.target.checked });
+      unCheckOthers({checkedItem: 3});
     }
   };
 
@@ -65,6 +76,27 @@ const Questions = () => {
       setOpt_4({ ...opt_4, answer_4: e.target.value });
     } else if (e.target.name === 'is_correct_4') {
       setOpt_4({ ...opt_4, is_correct_4: e.target.checked });
+      unCheckOthers({checkedItem: 4});
+    }
+  };
+
+  const unCheckOthers = ({checkedItem}) => {
+    if (checkedItem === 4) {
+      setOpt_1({ ...opt_1, is_correct_1: false });
+      setOpt_2({ ...opt_2, is_correct_2: false });
+      setOpt_3({ ...opt_3, is_correct_3: false });
+    } else if (checkedItem === 3) {
+      setOpt_1({ ...opt_1, is_correct_1: false });
+      setOpt_2({ ...opt_2, is_correct_2: false });
+      setOpt_4({ ...opt_4, is_correct_4: false });
+    } else if (checkedItem === 2) {
+      setOpt_1({ ...opt_1, is_correct_1: false });
+      setOpt_3({ ...opt_3, is_correct_3: false });
+      setOpt_4({ ...opt_4, is_correct_4: false });
+    } else if (checkedItem === 1) {
+      setOpt_2({ ...opt_2, is_correct_2: false });
+      setOpt_3({ ...opt_3, is_correct_3: false });
+      setOpt_4({ ...opt_4, is_correct_4: false });
     }
   };
 
@@ -115,14 +147,6 @@ const Questions = () => {
     return isValid;
   };
 
-  const checkExistence = (singleQuiz) => {
-    let found = false;
-    for (const q of quiz) {
-      if (q.id === singleQuiz.id) found = true;
-    }
-    return found;
-  };
-
   const handleAddUpdate = () => {
     const isValid = handleValidation();
     if (isValid) {
@@ -149,7 +173,7 @@ const Questions = () => {
         ],
       };
 
-      const alreadyExists = checkExistence(singleQuiz);
+      const alreadyExists = checkExistence(singleQuiz, quiz);
 
       if (alreadyExists) {
         let updatedQuiz = quiz;
@@ -169,27 +193,6 @@ const Questions = () => {
 
       clearQuiz();
     }
-  };
-
-  const getCorrectAnswer = (options) => {
-    let ans = '';
-
-    for (const [index, opt] of options.entries()) {
-      if (opt[`is_correct_${index + 1}`]) {
-        ans = opt[`answer_${index + 1}`];
-      }
-    }
-
-    return ans;
-  };
-
-  const deleteFromQuiz = (q) => {
-    const updatedQuiz = quiz.filter((qu) => {
-      return qu.quizTitle !== q.quizTitle;
-    });
-    setQuiz(updatedQuiz);
-    localStorage.removeItem('quiz');
-    localStorage.setItem('quiz', JSON.stringify(updatedQuiz));
   };
 
   const handleEdit = (q) => {
@@ -212,31 +215,6 @@ const Questions = () => {
       answer_4: q.options[3]['answer_4'],
       is_correct_4: q.options[3]['is_correct_4'],
     });
-  };
-
-  const pushToArchive = (q) => {
-    let temp = archive;
-    temp.push(q);
-    setArchive(temp);
-    localStorage.setItem('archive', JSON.stringify(temp));
-    deleteFromQuiz(q);
-  };
-
-  const handleRestore = (q) => {
-    existingQuiz.push(q);
-    localStorage.setItem('quiz', JSON.stringify(existingQuiz));
-    setQuiz(existingQuiz);
-
-    deleteFromArchive(q);
-  };
-
-  const deleteFromArchive = (q) => {
-    const updatedArchive = archive.filter((qu) => {
-      return qu.quizTitle !== q.quizTitle;
-    });
-    setArchive(updatedArchive);
-    localStorage.removeItem('archive');
-    localStorage.setItem('archive', JSON.stringify(updatedArchive));
   };
 
   return (
@@ -265,13 +243,15 @@ const Questions = () => {
         value={answer_1}
         onChange={handleOptionChange1}
       />
-      <input
-        type='checkbox'
-        onChange={handleOptionChange1}
-        name='is_correct_1'
-        checked={is_correct_1}
-      />
-      <label>Is correct</label>
+      <label>
+        <input
+          type='checkbox'
+          onChange={handleOptionChange1}
+          name='is_correct_1'
+          checked={is_correct_1}
+        />
+        Is correct
+      </label>
       <br />
       <br />
       <br />
@@ -283,13 +263,15 @@ const Questions = () => {
         value={answer_2}
         onChange={handleOptionChange2}
       />
-      <input
-        type='checkbox'
-        onChange={handleOptionChange2}
-        name='is_correct_2'
-        checked={is_correct_2}
-      />
-      <label>Is correct</label>
+      <label>
+        <input
+          type='checkbox'
+          onChange={handleOptionChange2}
+          name='is_correct_2'
+          checked={is_correct_2}
+        />
+        Is correct
+      </label>
       <br />
       <br />
       <br />
@@ -301,31 +283,37 @@ const Questions = () => {
         value={answer_3}
         onChange={handleOptionChange3}
       />
-      <input
-        type='checkbox'
-        onChange={handleOptionChange3}
-        name='is_correct_3'
-        checked={is_correct_3}
-      />
-      <label>Is correct</label>
+      <label>
+        <input
+          type='checkbox'
+          onChange={handleOptionChange3}
+          name='is_correct_3'
+          checked={is_correct_3}
+        />
+        Is correct
+      </label>
       <br />
       <br />
       <br />
-      <label>Answer 4</label>
-      <input
-        className='border border-gray-900'
-        type='text'
-        name='answer_4'
-        value={answer_4}
-        onChange={handleOptionChange4}
-      />
-      <input
-        type='checkbox'
-        onChange={handleOptionChange4}
-        name='is_correct_4'
-        checked={is_correct_4}
-      />
-      <label>Is correct</label>
+      <label>
+        Answer 4
+        <input
+          className='border border-gray-900'
+          type='text'
+          name='answer_4'
+          value={answer_4}
+          onChange={handleOptionChange4}
+        />
+      </label>
+      <label>
+        <input
+          type='checkbox'
+          onChange={handleOptionChange4}
+          name='is_correct_4'
+          checked={is_correct_4}
+        />
+        Is correct
+      </label>
       <br />
       <br />
       <br />
@@ -333,41 +321,18 @@ const Questions = () => {
         Add
       </button>
 
-      {/* Quiz List */}
       <div>
-        <table>
-          <tbody>
-            <tr>
-              <th>Quiz title</th>
-              <th>Answer</th>
-              <th>Edit</th>
-              <th>Archive</th>
-            </tr>
-            {quiz.length > 0 &&
-              quiz.map((q, index) => (
-                <tr key={index}>
-                  <td>{q.quizTitle}</td>
-                  <td>{getCorrectAnswer(q.options)}</td>
-                  <td>
-                    <button
-                      onClick={() => handleEdit(q)}
-                      className='px-8 py-1 bg-gray-500'
-                    >
-                      Edit
-                    </button>
-                  </td>
-                  <td>
-                    <button
-                      onClick={() => pushToArchive(q)}
-                      className='px-8 py-1 bg-red-300'
-                    >
-                      Archive
-                    </button>
-                  </td>
-                </tr>
-              ))}
-          </tbody>
-        </table>
+        {quiz.length > 0 && (
+          <QuestionsList
+            quiz={quiz}
+            handleEdit={handleEdit}
+            pushToArchive={pushToArchive}
+            setQuiz={setQuiz}
+            archive={archive}
+            setArchive={setArchive}
+          />
+        )}
+
         <br />
         <br />
         <br />
@@ -376,40 +341,14 @@ const Questions = () => {
           {archive.length > 0 && (
             <>
               <h2>Archive</h2>
-              <table>
-                <tbody>
-                  <tr>
-                    <th>Quiz title</th>
-                    <th>Answer</th>
-                    <th>Restore</th>
-                    <th>Delete</th>
-                  </tr>
-                  {archive.length > 0 &&
-                    archive.map((q, index) => (
-                      <tr key={index}>
-                        <td>{q.quizTitle}</td>
-                        <td>{getCorrectAnswer(q.options)}</td>
-                        <td>
-                          <button
-                            onClick={() => handleRestore(q)}
-                            className='px-8 py-1 bg-gray-500'
-                          >
-                            Restore
-                          </button>
-                        </td>
-
-                        <td>
-                          <button
-                            onClick={() => deleteFromArchive(q)}
-                            className='px-8 py-1 bg-red-700'
-                          >
-                            Delete
-                          </button>
-                        </td>
-                      </tr>
-                    ))}
-                </tbody>
-              </table>
+              <Archive
+                archive={archive}
+                handleRestore={handleRestore}
+                deleteFromArchive={deleteFromArchive}
+                setArchive={setArchive}
+                quiz={quiz}
+                setQuiz={setQuiz}
+              />
             </>
           )}
         </div>
