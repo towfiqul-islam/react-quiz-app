@@ -16,8 +16,8 @@ const Archive = ({
       </h2>
 
       <div className='overflow-x-auto relative'>
-        <table className='w-full text-sm text-left text-black light:text-black'>
-          <thead className='text-xs text-black uppercase bg-gray-200 light:bg-gray-300 light:text-black'>
+        <table className='w-full text-sm text-left text-black'>
+          <thead className='text-xs text-black uppercase bg-gray-200'>
             <tr>
               <th scope='col' className='py-3 px-6'>
                 Quiz title
@@ -38,11 +38,11 @@ const Archive = ({
               archive.map((q, index) => (
                 <tr
                   key={index}
-                  className='bg-white border-b light:bg-gray-100 light:border-gray-500'
+                  className='bg-gray-50 border-b'
                 >
                   <th
                     scope='row'
-                    className='py-4 px-6 font-medium text-gray-900 whitespace-nowrap light:text-black'
+                    className='py-4 px-6 font-medium text-gray-900 whitespace-nowrap'
                   >
                     {q.quizTitle}
                   </th>

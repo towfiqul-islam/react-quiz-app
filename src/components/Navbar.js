@@ -11,16 +11,15 @@ const Navbar = ({ showScore = false }) => {
     window.location.reload();
   };
   const handleAnswerNav = () => {
-    console.log({ showScore });
     if (showScore) {
       localStorage.removeItem('cache');
       window.location.reload();
     }
   };
   return (
-    <nav className='bg-white border-gray-200 px-2 sm:px-4 py-2.5 dark:bg-gray-800'>
+    <nav className='bg-gray-800 border-gray-200 px-2 sm:px-4 py-2.5'>
       <div className='md:w-4/5 flex justify-between items-center mx-auto'>
-        <div className='block text-xl font-semibold whitespace-nowrap dark:text-white'>
+        <div className='block text-xl text-white font-semibold whitespace-nowrap'>
           Quizz
         </div>
 
@@ -30,7 +29,7 @@ const Navbar = ({ showScore = false }) => {
               <li>
                 <Link
                   to='/questions'
-                  className=' py-2 pr-4 pl-3 text-white  dark:text-white'
+                  className=' py-2 pr-4 pl-3 text-white'
                   aria-current='page'
                 >
                   Questions
@@ -44,14 +43,14 @@ const Navbar = ({ showScore = false }) => {
                   {showScore ? (
                     <span
                       onClick={handleAnswerNav}
-                      className=' py-2 pr-4 pl-3 text-white  dark:text-white cursor-pointer'
+                      className=' py-2 pr-4 pl-3 text-white cursor-pointer'
                     >
                       Answers
                     </span>
                   ) : (
                     <Link
                       to='/answers'
-                      className=' py-2 pr-4 pl-3 text-white  dark:text-white'
+                      className=' py-2 pr-4 pl-3 text-white'
                       aria-current='page'
                     >
                       Answers
@@ -60,7 +59,7 @@ const Navbar = ({ showScore = false }) => {
                 </li>
 
                 <li onClick={logout}>
-                  <span className=' py-2 pr-4 pl-3 text-white  dark:text-white cursor-pointer'>
+                  <span className=' py-2 pr-4 pl-3 text-white cursor-pointer'>
                     Logout
                   </span>
                 </li>
