@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
 import { v4 as uuidv4 } from 'uuid';
 import {
   checkExistence,
@@ -7,6 +6,7 @@ import {
   handleRestore,
   pushToArchive,
 } from '../utils/helper';
+import Navbar from './Navbar';
 import Archive from './questions/Archive';
 import QuestionsList from './questions/QuestionsList';
 
@@ -226,138 +226,224 @@ const Questions = () => {
 
   return (
     <>
-      <div>Questions</div>
-      <div className='bg-gray-500 px-2 py-1 w-48 my-4'>
-        <Link to='/answers'>Go to Answers</Link>
-      </div>
-      <label>Title</label>
-      <textarea
-        className='border border-gray-900'
-        rows={2}
-        cols={50}
-        onChange={handleTitleChange}
-        name='title'
-        value={title}
-      ></textarea>
-      <br />
-      <br />
-      <br />
-      <label>Answer 1</label>
-      <input
-        className='border border-gray-900'
-        type='text'
-        name='answer_1'
-        value={answer_1}
-        onChange={handleOptionChange1}
-      />
-      <label>
-        <input
-          type='checkbox'
-          onChange={handleOptionChange1}
-          name='is_correct_1'
-          checked={is_correct_1}
-        />
-        Is correct
-      </label>
-      <br />
-      <br />
-      <br />
-      <label>Answer 2</label>
-      <input
-        className='border border-gray-900'
-        type='text'
-        name='answer_2'
-        value={answer_2}
-        onChange={handleOptionChange2}
-      />
-      <label>
-        <input
-          type='checkbox'
-          onChange={handleOptionChange2}
-          name='is_correct_2'
-          checked={is_correct_2}
-        />
-        Is correct
-      </label>
-      <br />
-      <br />
-      <br />
-      <label>Answer 3</label>
-      <input
-        className='border border-gray-900'
-        type='text'
-        name='answer_3'
-        value={answer_3}
-        onChange={handleOptionChange3}
-      />
-      <label>
-        <input
-          type='checkbox'
-          onChange={handleOptionChange3}
-          name='is_correct_3'
-          checked={is_correct_3}
-        />
-        Is correct
-      </label>
-      <br />
-      <br />
-      <br />
-      <label>
-        Answer 4
-        <input
-          className='border border-gray-900'
-          type='text'
-          name='answer_4'
-          value={answer_4}
-          onChange={handleOptionChange4}
-        />
-      </label>
-      <label>
-        <input
-          type='checkbox'
-          onChange={handleOptionChange4}
-          name='is_correct_4'
-          checked={is_correct_4}
-        />
-        Is correct
-      </label>
-      <br />
-      <br />
-      <br />
-      <button onClick={handleAddUpdate} className='px-8 py-2 bg-gray-300'>
-        Add
-      </button>
+      <Navbar />
+      <div className='w-4/5 mx-auto'>
+        <h2 className='text-center text-xl mt-4 mb-4 underline font-medium'>
+          Add Questions
+        </h2>
+        <div className=''>
+          <label
+            htmlFor='message'
+            className='block mb-2 text-sm font-medium text-gray-900 '
+          >
+            Title
+          </label>
+          <textarea
+            id='message'
+            rows='4'
+            className='block p-2.5 w-full text-sm text-black bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 '
+            placeholder='Who invented electricity?'
+            onChange={handleTitleChange}
+            name='title'
+            value={title}
+          ></textarea>
 
-      <div>
-        {quiz.length > 0 && (
-          <QuestionsList
-            quiz={quiz}
-            handleEdit={handleEdit}
-            pushToArchive={pushToArchive}
-            setQuiz={setQuiz}
-            archive={archive}
-            setArchive={setArchive}
-          />
-        )}
+          <br />
 
-        <br />
-        <br />
-        <br />
-        <br />
-        <div>
-          {archive.length > 0 && (
-            <>
-              <h2>Archive</h2>
-              <Archive
-                archive={archive}
-                handleRestore={handleRestore}
-                deleteFromArchive={deleteFromArchive}
-                setArchive={setArchive}
-                quiz={quiz}
-                setQuiz={setQuiz}
+          <div className='flex items-end'>
+            <div>
+              <label
+                htmlFor='answer_1'
+                className='block mb-2 text-sm font-medium text-gray-900 '
+              >
+                Answer 1
+              </label>
+              <input
+                type='text'
+                id='answer_1'
+                name='answer_1'
+                value={answer_1}
+                onChange={handleOptionChange1}
+                className='bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 '
+                required
               />
-            </>
+            </div>
+
+            <div className='ml-10'>
+              <input
+                id='is_correct_1'
+                type='checkbox'
+                onChange={handleOptionChange1}
+                name='is_correct_1'
+                checked={is_correct_1}
+                className='w-4 h-4 bg-gray-50 rounded border border-gray-300 focus:ring-3 '
+                required
+              />
+
+              <label
+                htmlFor='is_correct_1'
+                className='ml-2 text-sm font-medium text-gray-900'
+              >
+                Is correct 1
+              </label>
+            </div>
+          </div>
+
+          <br />
+
+          <div className='flex items-end'>
+            <div>
+              <label
+                htmlFor='answer_2'
+                className='block mb-2 text-sm font-medium text-gray-900 '
+              >
+                Answer 2
+              </label>
+              <input
+                type='text'
+                id='answer_2'
+                name='answer_2'
+                value={answer_2}
+                onChange={handleOptionChange2}
+                className='bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 '
+                required
+              />
+            </div>
+
+            <div className='ml-10'>
+              <input
+                id='is_correct_2'
+                type='checkbox'
+                onChange={handleOptionChange2}
+                name='is_correct_2'
+                checked={is_correct_2}
+                className='w-4 h-4 bg-gray-50 rounded border border-gray-300 focus:ring-3 '
+                required
+              />
+
+              <label
+                htmlFor='is_correct_2'
+                className='ml-2 text-sm font-medium text-gray-900'
+              >
+                Is correct 2
+              </label>
+            </div>
+          </div>
+
+          <br />
+          <div className='flex items-end'>
+            <div>
+              <label
+                htmlFor='answer_2'
+                className='block mb-2 text-sm font-medium text-gray-900 '
+              >
+                Answer 3
+              </label>
+              <input
+                type='text'
+                id='answer_3'
+                name='answer_3'
+                value={answer_3}
+                onChange={handleOptionChange3}
+                className='bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 '
+                required
+              />
+            </div>
+
+            <div className='ml-10'>
+              <input
+                id='is_correct_3'
+                type='checkbox'
+                onChange={handleOptionChange3}
+                name='is_correct_3'
+                checked={is_correct_3}
+                className='w-4 h-4 bg-gray-50 rounded border border-gray-300 focus:ring-3 '
+                required
+              />
+
+              <label
+                htmlFor='is_correct_3'
+                className='ml-2 text-sm font-medium text-gray-900'
+              >
+                Is correct 3
+              </label>
+            </div>
+          </div>
+
+          <br />
+          <div className='flex items-end'>
+            <div>
+              <label
+                htmlFor='answer_4'
+                className='block mb-2 text-sm font-medium text-gray-900 '
+              >
+                Answer 4
+              </label>
+              <input
+                type='text'
+                id='answer_4'
+                name='answer_4'
+                value={answer_4}
+                onChange={handleOptionChange4}
+                className='bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 '
+                required
+              />
+            </div>
+
+            <div className='ml-10'>
+              <input
+                id='is_correct_4'
+                type='checkbox'
+                onChange={handleOptionChange4}
+                name='is_correct_4'
+                checked={is_correct_4}
+                className='w-4 h-4 bg-gray-50 rounded border border-gray-300 focus:ring-3 '
+                required
+              />
+
+              <label
+                htmlFor='is_correct_4'
+                className='ml-2 text-sm font-medium text-gray-900'
+              >
+                Is correct 4
+              </label>
+            </div>
+          </div>
+          <br />
+          <button
+            onClick={handleAddUpdate}
+            className='text-white bg-blue-700 hover:bg-blue-800  font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center'
+          >
+            {isEditing ? 'Edit' : 'Add'}
+          </button>
+        </div>
+
+        <div>
+          {quiz.length > 0 && (
+            <QuestionsList
+              quiz={quiz}
+              handleEdit={handleEdit}
+              pushToArchive={pushToArchive}
+              setQuiz={setQuiz}
+              archive={archive}
+              setArchive={setArchive}
+            />
           )}
+
+          <div>
+            {archive.length > 0 && (
+              <>
+                <Archive
+                  archive={archive}
+                  handleRestore={handleRestore}
+                  deleteFromArchive={deleteFromArchive}
+                  setArchive={setArchive}
+                  quiz={quiz}
+                  setQuiz={setQuiz}
+                />
+              </>
+            )}
+          </div>
         </div>
       </div>
     </>
