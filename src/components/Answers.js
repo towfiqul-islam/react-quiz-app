@@ -42,14 +42,19 @@ const Answers = () => {
     localStorage.removeItem('cache');
     window.location.reload();
   };
+  const quiz_in_progress = !done && options && options.length;
   return (
     <>
-      <div>Answers</div>
+      {quiz_in_progress > 0 && (
+        <div>
+          Answering {ans_count + 1} of {quiz.length} questions
+        </div>
+      )}
 
       <div>
         {!done && <h2>{quizTitle}</h2>}
         <div>
-          {!done && options && options.length > 0 ? (
+          {quiz_in_progress > 0 ? (
             options.map((opt, index) => (
               <div className='mt-4' key={index}>
                 <button

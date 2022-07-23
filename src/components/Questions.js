@@ -10,6 +10,8 @@ import {
 import Archive from './questions/Archive';
 import QuestionsList from './questions/QuestionsList';
 
+const MAX_QUESTIONS_LIMIT = 10;
+
 const Questions = () => {
   const existingQuiz = JSON.parse(localStorage.getItem('quiz')) || [];
   const archived = JSON.parse(localStorage.getItem('archive')) || [];
@@ -49,7 +51,7 @@ const Questions = () => {
       setOpt_1({ ...opt_1, answer_1: e.target.value });
     } else if (e.target.name === 'is_correct_1') {
       setOpt_1({ ...opt_1, is_correct_1: e.target.checked });
-      unCheckOthers({checkedItem: 1});
+      unCheckOthers({ checkedItem: 1 });
     }
   };
 
@@ -58,7 +60,7 @@ const Questions = () => {
       setOpt_2({ ...opt_2, answer_2: e.target.value });
     } else if (e.target.name === 'is_correct_2') {
       setOpt_2({ ...opt_2, is_correct_2: e.target.checked });
-      unCheckOthers({checkedItem: 2});
+      unCheckOthers({ checkedItem: 2 });
     }
   };
 
@@ -67,7 +69,7 @@ const Questions = () => {
       setOpt_3({ ...opt_3, answer_3: e.target.value });
     } else if (e.target.name === 'is_correct_3') {
       setOpt_3({ ...opt_3, is_correct_3: e.target.checked });
-      unCheckOthers({checkedItem: 3});
+      unCheckOthers({ checkedItem: 3 });
     }
   };
 
@@ -76,11 +78,11 @@ const Questions = () => {
       setOpt_4({ ...opt_4, answer_4: e.target.value });
     } else if (e.target.name === 'is_correct_4') {
       setOpt_4({ ...opt_4, is_correct_4: e.target.checked });
-      unCheckOthers({checkedItem: 4});
+      unCheckOthers({ checkedItem: 4 });
     }
   };
 
-  const unCheckOthers = ({checkedItem}) => {
+  const unCheckOthers = ({ checkedItem }) => {
     if (checkedItem === 4) {
       setOpt_1({ ...opt_1, is_correct_1: false });
       setOpt_2({ ...opt_2, is_correct_2: false });
@@ -123,6 +125,11 @@ const Questions = () => {
 
   const handleValidation = () => {
     let isValid = true;
+    if (quiz.length === MAX_QUESTIONS_LIMIT && !isEditing) {
+      isValid = false;
+      alert(`Max ${MAX_QUESTIONS_LIMIT} questions limit reached!`);
+      return;
+    }
     if (title === '') {
       isValid = false;
       alert('Must provide a quiz title');

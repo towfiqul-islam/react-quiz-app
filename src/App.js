@@ -7,8 +7,12 @@ import { isAdmin, isUser, isUserOrAdmin } from './utils/permission';
 import { quizData } from './utils/seed';
 
 function App() {
-  localStorage.setItem('quiz', JSON.stringify(quizData));
-  localStorage.removeItem('archive');
+  const existingQuiz = JSON.parse(localStorage.getItem('quiz')) || [];
+  if (existingQuiz && existingQuiz.length === 0) {
+    localStorage.setItem('quiz', JSON.stringify(quizData));
+    localStorage.removeItem('archive');
+  }
+
   return (
     <>
       <AppState>
