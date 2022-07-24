@@ -10,7 +10,7 @@ const Archive = ({
   setQuiz,
 }) => {
   return (
-    <div>
+    <div className='mb-12'>
       <h2 className='text-center text-xl mt-4 mb-4 underline font-medium'>
         Archive
       </h2>
@@ -67,9 +67,6 @@ const Archive = ({
           </tbody>
         </table>
       </div>
-      <br />
-      <br />
-      <br />
     </div>
   );
 };

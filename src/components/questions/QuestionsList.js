@@ -10,10 +10,7 @@ const QuestionsList = ({
   setArchive,
 }) => {
   return (
-    <div>
-      <br />
-      <br />
-      <br />
+    <div className='my-16'>
       <h2 className='text-center text-xl mt-4 mb-4 underline font-medium'>
         Current Questions
       </h2>
@@ -69,10 +66,6 @@ const QuestionsList = ({
           </tbody>
         </table>
       </div>
-
-      <br />
-      <br />
-      <br />
     </div>
   );
 };
